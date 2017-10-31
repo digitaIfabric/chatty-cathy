@@ -36,6 +36,13 @@ class App extends Component {
     }, 500);
   }
 
+  handleUserChange(e) {
+    console.log("UserChange event tracked");
+    const User = e.target.value;
+    console.log("Username is: ", User);
+    this.setState({currentUser: {name: User}});
+    }
+
   handleKeyDown(e) {
     if(e.key === "Enter"){
       e.preventDefault()
@@ -58,13 +65,9 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty-Cathy</a>
         </nav>
         <MessageList messages = {this.state.messages}/>
-        <ChatBar name = {this.state.currentUser.name} handleKeyDown = {this.handleKeyDown.bind(this)}/>
+        <ChatBar name = {this.state.currentUser.name} handleKeyDown = {this.handleKeyDown.bind(this)} handleUserChange = {this.handleUserChange.bind(this)}/>
       </div>
     );
   }
-
-
 }
-
-
 export default App;
