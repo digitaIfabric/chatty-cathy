@@ -32,18 +32,14 @@ class App extends Component {
       this.setState({socket:this.socket});
     }
 
-    console.log("componentDidMount <App />");
-    setTimeout(() => {
-      console.log("Simulating incoming message");
-      // Add a new message to the list of messages in the data store
-      //const newMessage = {id: 789, username: "Michelle", content: "Hello there!"};
-      //const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      //this.setState({messages: messages});
-    }, 500);
+    this.socket.onmessage = (e) => {
+      //console.log(event);
+      let newMsg = JSON.parse(event.data)
+      console.log(newMsg);
+      const messages = this.state.messages.concat(newMsg);
+      this.setState({messages: messages});
+    }
   }
-
 
   handleUserChange(e) {
     console.log("UserChange event tracked");
@@ -57,12 +53,8 @@ class App extends Component {
       e.preventDefault()
       const newChatBarMessage ={ username: this.state.currentUser.name, content: e.target.value}
       console.log("KeyDown event tracked");
-      console.log("Results: ", this.state.currentUser.name, e.target.value);
-      // // Send message to this.state Message
-      // const messages = this.state.messages.concat(newChatBarMessage);
-      // this.setState({messages: messages});
       this.state.socket.send(JSON.stringify(newChatBarMessage));
-      //socket.send(JSON.stringify(event.data));
+      // Send message to this.state Message
       // Reset the value to an empty string for next message
       e.target.value = '';
     }
