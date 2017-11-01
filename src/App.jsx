@@ -24,6 +24,77 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.socket = new WebSocket('ws://localhost:3001');
+    console.log('Connected to WebSocket1');
+    this.socket.onopen = (e) => {
+      console.log('Connected to WebSocket2');
+      this.socket.send("Here's some text that the server is urgently awaiting!");
+
+    }
+
+
+    // USE JSON.parse()
+    // let newMsg = JSON.parse(event.data);
+
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
+
+    // Send text to all users through the server
+    // function sendText() {
+    //   // Construct a msg object containing the data the server needs to process the message from the chat client.
+    //   var msg = {
+    //     type: "message",
+    //     text: document.getElementById("text").value,
+    //     id:   clientID,
+    //     date: Date.now()
+    //   };
+    //
+    //   // Send the msg object as a JSON-formatted string.
+    //   exampleSocket.send(JSON.stringify(msg));
+    //
+    //   // Blank the text input element, ready to receive the next line of text from the user.
+    //   document.getElementById("text").value = "";
+    // }
+
+    // exampleSocket.onmessage = function(event) {
+    //   var f = document.getElementById("chatbox").contentDocument;
+    //   var text = "";
+    //   var msg = JSON.parse(event.data);
+    //   var time = new Date(msg.date);
+    //   var timeStr = time.toLocaleTimeString();
+    //
+    //   switch(msg.type) {
+    //     case "id":
+    //       clientID = msg.id;
+    //       setUsername();
+    //       break;
+    //     case "username":
+    //       text = "<b>User <em>" + msg.name + "</em> signed in at " + timeStr + "</b><br>";
+    //       break;
+    //     case "message":
+    //       text = "(" + timeStr + ") <b>" + msg.name + "</b>: " + msg.text + "<br>";
+    //       break;
+    //     case "rejectusername":
+    //       text = "<b>Your username has been set to <em>" + msg.name + "</em> because the name you chose is in use.</b><br>"
+    //       break;
+    //     case "userlist":
+    //       var ul = "";
+    //       for (i=0; i < msg.users.length; i++) {
+    //         ul += msg.users[i] + "<br>";
+    //       }
+    //       document.getElementById("userlistbox").innerHTML = ul;
+    //       break;
+    //   }
+    //
+    //   if (text.length) {
+    //     f.write(text);
+    //     document.getElementById("chatbox").contentWindow.scrollByPages(1);
+    //   }
+    // };
+    // exampleSocket.close();
+
+
+
     console.log("componentDidMount <App />");
     setTimeout(() => {
       console.log("Simulating incoming message");
@@ -35,6 +106,7 @@ class App extends Component {
       this.setState({messages: messages});
     }, 500);
   }
+
 
   handleUserChange(e) {
     console.log("UserChange event tracked");
