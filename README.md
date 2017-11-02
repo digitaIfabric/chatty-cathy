@@ -1,21 +1,24 @@
-React Boilerplate
+Chatty - Cathy
 =====================
 
-A minimal and light dev environment for ReactJS.
+Small real time web chat application like Slack built with popular libraries such as React, Babel and WebPack.
+
+### Functionality
+* Client-side SPA (single-page app) built with ReactJS
+* Contains a chat log displaying messages and notifications
+* Contains an input field to change your name and an input field to send a message
+* The client-side app communicates with a server via WebSockets for multi-user real-time updates
+* No persistent database is involved; the focus is on the client-side experience
+
 
 ### Usage
 
-Clone the boilerplate and create your own git repo.
-
 ```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
+git clone git@github.com:digitalfabric92/chatty-cathy.git
+cd chatty-cathy
 ```
 
-Install the dependencies and start the server.
+Install the dependencies and start the react server
 
 ```
 npm install
@@ -23,23 +26,29 @@ npm start
 open http://localhost:3000
 ```
 
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
+From the ./server directory, Install the WebSocket server dependencies and start the WS server
 
 ```
-npm run lint
+npm install
+npm start
+open http://localhost:3001
 ```
 
 ### Dependencies
 
 * React
 * Webpack
+* [file-loader](https://github.com/webpack-contrib/file-loader)
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+
+
+### Server Dependencies
+
+* [UUID](https://www.npmjs.com/package/uuid)
+* [randomcolor](https://www.npmjs.com/package/randomcolor)
+
+### Screenshots
+
+[screenshot0](https://github.com/digitalfabric92/chatty-cathy/build/screenshot0.png)
+[screenshot1](https://github.com/digitalfabric92/chatty-cathy/build/screenshot1.png)

@@ -87,7 +87,8 @@ class App extends Component {
           <img className="navbar-image" src={Image} />
           <a href="/" className="navbar-brand">Chatty-Cathy</a>
           <div className="current-users">
-            {this.state.clientCount} user(s) online
+            {/*{this.state.clientCount} user(s) online*/}
+            7305800767 user(s) online
           </div>
         </nav>
         <MessageList messages = {this.state.messages} />
