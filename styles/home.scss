@@ -39,6 +39,14 @@ body {
   flex: 2;
 }
 
+.current-users {
+  position: absolute;
+  top: 31%;
+  right: 0;
+  margin-right: 30px;
+  font-size: 15px;
+}
+
 .message {
   display: flex;
   padding: 5px;

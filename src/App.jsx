@@ -8,7 +8,8 @@ class App extends Component {
     super(props)
     this.state = {
       currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: []
+      messages: [],
+      clientCount: 0
     }
   }
 
@@ -35,6 +36,10 @@ class App extends Component {
         case 'incomingNotification':
           // Handle incoming notification
           this.setState({messages: messages})
+          break
+        case 'userCount':
+          // Handle incoming user count
+          this.setState({clientCount: newMsg.count})//TODO value extracted out of newMsg})
           break
         default:
           this.setState({messages: messages})
@@ -65,17 +70,12 @@ class App extends Component {
       const newChatBarMessage = {type: 'postMessage', username: this.state.currentUser.name, content: e.target.value}
       console.log("KeyDown event tracked");
       this.state.socket.send(JSON.stringify(newChatBarMessage));
+      // socket.io 90%
       // Send message to this.state Message
       // Reset the value to an empty string for next message
       e.target.value = '';
     }
   }
-
-  handleNotif(num) {
-    //this.setState({})
-  }
-
-  //DISPLAY THE INCOMING MESSAGE ON THE CLIENT
 
   render() {
     // console.log("Rendering <App />")
@@ -83,6 +83,9 @@ class App extends Component {
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty-Cathy</a>
+          <div className="current-users">
+            {this.state.clientCount} user(s) online
+          </div>
         </nav>
         <MessageList messages = {this.state.messages} />
         <ChatBar name = {this.state.currentUser.name} handleKeyDown = {this.handleKeyDown.bind(this)} handleUserChange = {this.handleUserChange.bind(this)}/>

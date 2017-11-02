@@ -16,7 +16,7 @@ const server = express()
 
 // Create the WebSockets server
 const wss = new SocketServer.Server({ server });
-
+let user = {};
 
 // Broadcast to all.
 wss.broadcast = function broadcast(data) {
@@ -27,18 +27,28 @@ wss.broadcast = function broadcast(data) {
   });
 };
 
+// Send user function
+const sendUserCount = (size) => {
+  let user = {
+    type: 'userCount',
+    count: size
+  }
+  wss.broadcast(JSON.stringify(user));
+}
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
+  console.log('Client connected');
+  console.log("This is the count",  wss.clients.size);
+  sendUserCount(wss.clients.size);
 
-  // client.onmessage = (event) => {
-  // let msg = JSON.parse(event.data)
-  // msg.uuid = uuid4()
-
-  //console.log('Client connected');
   ws.on('message', (message) => {
     let msg = JSON.parse(message);
+    // Send new User msg object
+    console.log("INSIDE MESSAGE COUNT",  wss.clients.size);
+    // sendCount(clientCount);
     //console.log("The msg:", msg);
     // postMessage, postNotification;
     // server receives message above and then broadcasts this to all clients
@@ -50,7 +60,6 @@ wss.on('connection', (ws) => {
         break
       case "postNotification":
         msg.type = 'incomingNotification';
-        // msg.color = randomColor();
         break
       default:
         console.log("Message.type is: ", msg.type)
@@ -64,7 +73,10 @@ wss.on('connection', (ws) => {
 });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {console.log('Client disconnected, NEW COUNT:', wss.clients.size)
+  sendUserCount(wss.clients.size);
+  });
 });
+
 
 
