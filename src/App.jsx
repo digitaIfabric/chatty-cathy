@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
-// import Image from './chatty-cathy.png';
+import Image from '../build/chatty-cathy.png';
 
 class App extends Component {
   constructor(props) {
@@ -84,6 +84,7 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar">
+          <img className="navbar-image" src={Image} />
           <a href="/" className="navbar-brand">Chatty-Cathy</a>
           <div className="current-users">
             {this.state.clientCount} user(s) online
