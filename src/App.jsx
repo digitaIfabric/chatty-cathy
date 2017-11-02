@@ -7,19 +7,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-          id: "123"
-        },
-        {
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
-          id: "456"
-        }
-      ]
+      currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+      messages: []
     }
   }
 
@@ -35,29 +24,55 @@ class App extends Component {
     this.socket.onmessage = (e) => {
       //console.log(event);
       let newMsg = JSON.parse(event.data)
-      console.log(newMsg);
-      const messages = this.state.messages.concat(newMsg);
-      this.setState({messages: messages});
+      let messages = this.state.messages.concat(newMsg)
+      console.log("the newMsg array: ",newMsg.type);
+      switch (newMsg.type) {
+        case 'incomingMessage':
+          // Handle incoming message
+          console.log("The color is", newMsg.color);
+          this.setState({messages: messages})
+          break
+        case 'incomingNotification':
+          // Handle incoming notification
+          this.setState({messages: messages})
+          break
+        default:
+          this.setState({messages: messages})
+      }
     }
   }
 
   handleUserChange(e) {
     console.log("UserChange event tracked");
-    const User = e.target.value;
-    console.log("Username is: ", User);
-    this.setState({currentUser: {name: User}});
+    const newUser = e.target.value;
+    console.log("Username is: ", newUser);
+    if (newUser !== this.state.currentUser.name) {
+    const newMessage = {
+      type: 'postNotification',
+      username: this.state.username,
+      content: `${this.state.currentUser.name} has changed their name to ${newUser}`
     }
+      // Send message
+      this.state.socket.send(JSON.stringify(newMessage));
+      this.setState({currentUser: {name: newUser}});
+    } else {
+      console.log("newUser == New state");
+    } }
 
   handleKeyDown(e) {
     if(e.key === "Enter"){
       e.preventDefault()
-      const newChatBarMessage ={ username: this.state.currentUser.name, content: e.target.value}
+      const newChatBarMessage = {type: 'postMessage', username: this.state.currentUser.name, content: e.target.value}
       console.log("KeyDown event tracked");
       this.state.socket.send(JSON.stringify(newChatBarMessage));
       // Send message to this.state Message
       // Reset the value to an empty string for next message
       e.target.value = '';
     }
+  }
+
+  handleNotif(num) {
+    //this.setState({})
   }
 
   //DISPLAY THE INCOMING MESSAGE ON THE CLIENT
@@ -69,10 +84,90 @@ class App extends Component {
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty-Cathy</a>
         </nav>
-        <MessageList messages = {this.state.messages}/>
+        <MessageList messages = {this.state.messages} />
         <ChatBar name = {this.state.currentUser.name} handleKeyDown = {this.handleKeyDown.bind(this)} handleUserChange = {this.handleUserChange.bind(this)}/>
       </div>
     );
   }
 }
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, {Component} from 'react';
+// import MessageList from './MessageList.jsx';
+// import ChatBar from './ChatBar.jsx'
+// import NavBar from './NavBar.jsx'
+//
+// class App extends Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+//       messages: []
+//     }
+//   }
+//
+//
+//   componentDidMount() {
+//     this.socket = new WebSocket('ws://localhost:3001')
+//     this.socket.onopen = (e) => {
+//       console.log('connected to websocket')
+//     }
+//     this.socket.onmessage = (e) => {
+//       const messages = this.state.messages.concat(JSON.parse(event.data))
+//       this.setState({messages: messages})
+//     }
+//   }
+//
+//   sendMessage(msg) {
+//     this.socket.send(JSON.stringify(msg))
+//   }
+//
+//   changeUser(e) {
+//     if(e.key == "Enter"){
+//       const newUser = e.target.value
+//       const newMessage = { type: 'postNotification', content: `${this.state.currentUser.name} has changed their name to ${newUser}`}
+//       this.sendMessage(newMessage)
+//       this.setState({currentUser: {name: newUser}})
+//     }
+//   }
+//
+//   handleChange(e) {
+//     if(e.key == "Enter"){
+//       e.preventDefault
+//       const newMessage ={ type: 'postMessage', username: this.state.currentUser.name, content: e.target.value }
+//       this.sendMessage(newMessage)
+//       e.target.value = ''
+//     }
+//   }
+//
+//   render() {
+//     console.log("Rendering <App/>");
+//     return (
+//       <div>
+//         <NavBar />
+//         <MessageList messages = {this.state.messages} />
+//         <ChatBar name = {this.state.currentUser.name} handleChange = {this.handleChange.bind(this)} changeUser = {this.changeUser.bind(this)} />
+//       </div>
+//     );
+//   }
+// }
+// export default App;

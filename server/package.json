@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "randomcolor": "^0.5.3",
     "uuid": "^3.1.0"
   }
 }

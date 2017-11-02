@@ -3,21 +3,22 @@ import Message from './Message.jsx';
 
 class Messages extends Component {
   render() {
-    const messageList = this.props.messages; // regular assignment array of messages
+    let messageList = this.props.messages; // regular assignment array of messages
     // const {messages} = this.props; // es6 assignment of messages
-
-    console.log("Rendering <MessageList />")
     return (
 
       <main className="messages">
 
         {messageList.map((message) => {
-        return (<Message key = {message.id} username = {message.username} content = {message.content} />)
+          if (message.type === 'incomingMessage' ) {
+            // conditional rendering
+            return <Message key={message.id} username={message.username} content={message.content} color={message.color}/>
+          }
+          else if (message.type === 'incomingNotification' ) {
+            return (<div className="message system"> {message.content} </div> );
+          }
         })}
 
-        <div className="message system">
-          Anonymous1 changed their name to nomnom.
-        </div>
       </main>
     );
   }
