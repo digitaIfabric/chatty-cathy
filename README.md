@@ -50,5 +50,5 @@ open http://localhost:3001
 
 ### Screenshots
 
-[screenshot0](https://github.com/digitalfabric92/chatty-cathy/build/screenshot0.png)
-[screenshot1](https://github.com/digitalfabric92/chatty-cathy/build/screenshot1.png)
+[screenshot0](https://github.com/digitalfabric92/chatty-cathy/blob/master/build/screenshot0.png)
+[screenshot1](https://github.com/digitalfabric92/chatty-cathy/blob/master/build/screenshot1.png)
